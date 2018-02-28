@@ -52,6 +52,26 @@ Accordingly, if this leads to accelerated convergence, one can be certain that i
 
 ## Implicit Dynamics of Depth
 
+Suppose we are interested in learning a linear model parameterized by a matrix $W$, through minimization of some training loss $L(W)$.
+Instead of working directly with $W$, we replace it by a depth $N$ linear neural network, i.e. we overparameterize it as $W=W_{N}W_{N-1}\cdots{W_1}$, with $W_j$ being weight matrices of individual layers.
+In the paper we show that if one applies gradient descent over $W_{1}\ldots{W}_N$, with small learning rate $\eta$, and with the condition:
+
+$$W_{j+1}^\top W_{j+1} = W_j W_j^\top$$
+
+satisfied at optimization commencement (note that this approximately holds with standard near-zero initialization), the dynamics induced on the overall input-output mapping $W$ can be written as follows:
+
+$$W^{(t+1)}\leftarrow{W}^{(t)}-\eta\sum_{j=1}^{N}\left[W^{(t)}(W^{(t)})^\top\right]^\frac{j-1}{N}\nabla{L}(W^{(t)})\left[(W^{(t)})^\top{W}^{(t)}\right]^\frac{N-j}{N}$$
+
+We validate empirically that this analytically derived update rule (over classic linear model) indeed complies with deep network optimization, and take a series of steps to theoretically interpret it.
+We find that the transformation applied to the gradient $\nabla{L}(W)$ (multiplication from the left by $[WW^\top]^\frac{j-1}{N}$, and from the right by $[W^\top{W}]^\frac{N-j}{N}$, followed by summation over $j$) is a particular preconditioning scheme, that promotes movement along directions already taken by optimization.
+More concretely, the preconditioning can be seen as a combination of two elements:
+* an adaptive learning rate that increases step sizes away from initialization; and
+* a "momentum-like" operation that stretches the gradient along the azimuth taken so far.
+
+An important point to make is that the update rule above, referred to hereafter as the *end-to-end update rule*, does not depend on widths of hidden layers in the linear neural network, only on its depth ($N$).
+This implies that from an optimization perspective, overparameterizing using wide or narrow networks has the same effect - it is only the number of layers that matters.
+Therefore, acceleration by depth need not be computationally demanding - a fact we clearly observe in our experiments (see below).
+
 
 ## Beyond Regularization
 
