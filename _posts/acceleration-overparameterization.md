@@ -80,12 +80,39 @@ Therefore, acceleration by depth need not be computationally demanding - a fact 
 ## Beyond Regularization
 
 The end-to-end update rule defines an optimization scheme whose steps are a function of the gradient $\nabla{L}(W)$ and the parameter $W$.
-As opposed to many acceleration methods (e.g. momentum or Adam) that explicitly maintain auxiliary variables, this scheme is memoryless, and by definition born from gradient descent over something (overparameterized objective).
+As opposed to many acceleration methods (e.g. [momentum](https://distill.pub/2017/momentum/) or [Adam](https://arxiv.org/abs/1412.6980)) that explicitly maintain auxiliary variables, this scheme is memoryless, and by definition born from gradient descent over something (overparameterized objective).
 It is therefore natural to ask if we can represent the end-to-end update rule as gradient descent over some regularization of the loss $L(W)$, i.e. over some function of $W$.
-Somewhat surprisingly, the answer is almost always negative - as long as the loss $L(W)$ does not have a critical point at $W=0$, the end-to-end update rule, i.e. the effect of overparameterization, cannot be attained via *any* regularizer.
+We prove, somewhat surprisingly, the answer is almost always negative - as long as the loss $L(W)$ does not have a critical point at $W=0$, the end-to-end update rule, i.e. the effect of overparameterization, cannot be attained via *any* regularizer.
 
 
 ## Acceleration on $\ell_p$ Regression
+
+So far we treated the effect of depth (in the form of overparameterization) on optimization by presenting an equivalent preconditioning scheme and discussing some of its properties.
+We have not, however, provided any evidence in support of acceleration (faster convergence) resulting from this scheme.
+Apparently, whether or not acceleration takes place depends on the particular objective $L(W)$.
+We focus in the paper on the setting of linear regression with $\ell_p$ loss, and show, via both theoretical arguments and experiments, that a speedup occurs when $p>2$.
+Following is a sample result from an experiment with $\ell_2$ loss:
+
+<p style="text-align:center;">
+<img src="/assets/acc_oprm/L2_exp.png" width="40%" alt="L2 regression experiment" />
+</p>
+
+As can be seen, adding layers here slightly slowed down optimization (in line with previous observations by [Saxe et al.](https://arxiv.org/abs/1312.6120)).
+In contrast, with $\ell_4$ loss depth led to significant acceleration, as demonstrated by the plot below:
+
+<p style="text-align:center;">
+<img src="/assets/acc_oprm/L4_exp.png" width="40%" alt="L4 regression experiment" />
+</p>
+
+These results correspond to a task in which the output is a scalar.
+To emphasize the fact that the effect of depth on optimization need not be computationally expensive (end-to-end update rule does not depend on hidden layer widths - see above), we used hidden layers each comprising a single scalar.
+A speedup by orders of magnitude was thus obtained with essentially no overhead in terms of computation or storage.
+Moreover, we compared this speedup to different optimization algorithms, and found it superior to two well-known acceleration methods - [AdaGrad](http://www.jmlr.org/papers/volume12/duchi11a/duchi11a.pdf) and [AdaDelta](https://arxiv.org/abs/1212.5701).
+
+To the best of our knowledge, our results provide first empirical evidence for the fact that depth, even without any gain in expressiveness, and despite introducing
+non-convexity to a formerly convex problem, can lead to favorable optimization, sometimes more so than carefully designed algorithms tailored for convex problems.
+This obviously warrants further investigation, both theoretical and empirical.
+We provide a few more experiments and discussions in the paper.
 
 
 ## Non-Linear Experiment
