@@ -72,6 +72,9 @@ An important point to make is that the update rule above, referred to hereafter 
 This implies that from an optimization perspective, overparameterizing using wide or narrow networks has the same effect - it is only the number of layers that matters.
 Therefore, acceleration by depth need not be computationally demanding - a fact we clearly observe in our experiments (see below).
 
+<p style="text-align:center;">
+<img src="/assets/acc_oprm/update_rule.png" width="60%" alt="End-to-end update rule" />
+</p>
 
 ## Beyond Regularization
 
