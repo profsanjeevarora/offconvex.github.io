@@ -76,7 +76,13 @@ Therefore, acceleration by depth need not be computationally demanding - a fact 
 <img src="/assets/acc_oprm/update_rule.png" width="60%" alt="End-to-end update rule" />
 </p>
 
+
 ## Beyond Regularization
+
+The end-to-end update rule defines an optimization scheme whose steps are a function of the gradient $\nabla{L}(W)$ and the parameter $W$.
+As opposed to many acceleration methods (e.g. momentum or Adam) that explicitly maintain auxiliary variables, this scheme is memoryless, and by definition born from gradient descent over something (overparameterized objective).
+It is therefore natural to ask if we can represent the end-to-end update rule as gradient descent over some regularization of the loss $L(W)$, i.e. over some function of $W$.
+Somewhat surprisingly, the answer is almost always negative - as long as the loss $L(W)$ does not have a critical point at $W=0$, the end-to-end update rule, i.e. the effect of overparameterization, cannot be attained via *any* regularizer.
 
 
 ## Acceleration on $\ell_p$ Regression
