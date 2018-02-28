@@ -117,5 +117,16 @@ We provide a few more experiments and discussions in the paper.
 
 ## Non-Linear Experiment
 
+As a final sanity test, we evaluated the effect of overparameterization on optimization in a non-idealized (yet simple) deep learning setting - the [convolutional network tutorial for MNIST built into TensorFlow](https://github.com/tensorflow/models/tree/master/tutorials/image/mnist).
+We introduced overparameterization by simply placing two matrices in succession instead of the matrix in each dense layer.
+With an addition of roughly 15% in number of parameters, optimization accelerated by orders of magnitude:
+
+<p style="text-align:center;">
+<img src="/assets/acc_oprm/cnn_exp.png" width="40%" alt="TensorFlow MNIST CNN experiment" />
+</p>
+
+We note that similar experiments on other convolutional networks also gave rise to a speedup, but not nearly as prominent as the above.
+Empirical characterization of conditions under which overparameterization accelerates optimization in non-linear settings is potentially an interesting direction for future research.
+
 
 ## Concluding Thoughts
