@@ -12,17 +12,15 @@ Conventional wisdom, backed by multiple theoretical studies, states that adding 
 On the other hand, it is generally believed that this expressive gain comes at a price - optimization (training) of deeper networks is more difficult.
 This belief is somewhat hardcoded into the "landscape characterization" approach for analyzing deep network optimization.
 Papers following this approach typically study local minima and/or saddle points in the objective of a deep network, while implicitly assuming that the ideal landscape is convex (single global minimum, no other critical point).
-In a [new paper](https://arxiv.org/abs/1802.06509) we take a different tack, and reach the counterintuitive conclusion that depth can actually *accelerate* optimization, even in cases where the original problem was simple and convex.
-
+In a [new paper](https://arxiv.org/abs/1802.06509) we take a different tack, and reach the counterintuitive conclusion that sometimes increasing depth can *accelerate* optimization. 
 
 ## The Effect of a Single Multiplicative Scalar
 
-Let us begin by considering what is perhaps the simplest possible instance of depth - addition of a single multiplicative scalar.
-Suppose we would like to learn a linear regression model by optimizing $\ell_p$ loss over a training set $S$:
+Let's begin by considering what is perhaps the simplest possible learning problem: linear regression model with $\ell_p$ loss. Below, $S$ is the training set and $y$ is the label for $x$.
 
 $$\min_{\mathbf{w}}~L(\mathbf{w}):=\frac{1}{p}\sum_{(\mathbf{x},y)\in{S}}(\mathbf{x}^\top\mathbf{w}-y)^p$$
-
-We may convert the linear model to an extremely simple "deep network" by replacing the vector $\mathbf{w}$ with a vector $\mathbf{w_1}$ times a scalar $\omega_2$:
+ 
+When $p>2$, we discovered an acceleration effect via simple overparametrization:  convert this linear model to an extremely simple "depth 2 net" by replacing the vector $\mathbf{w}$ with a vector $\mathbf{w_1}$ times a scalar $\omega_2$. Clearly this doesn't change the set of feasible solutions, but it makes the objective nonconvex:
 
 $$\min_{\mathbf{w_1},\omega_2}~L(\mathbf{w_1},\omega_2):=\frac{1}{p}\sum_{(\mathbf{x},y)\in{S}}(\mathbf{x}^\top\mathbf{w_1}\omega_2-y)^p$$
 
